@@ -59,9 +59,9 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
       }
 
       if (result.size() == 0)
-        junit.framework.Assert.assertTrue("No record found with name = '" + uniqueId + "'!", false);
+        assertTrue("No record found with name = '" + uniqueId + "'!", false);
       else if (result.size() > 1)
-        junit.framework.Assert.assertTrue(result.size() + " records found with name = '" + uniqueId + "'!", false);
+        assertTrue(result.size() + " records found with name = '" + uniqueId + "'!", false);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -124,7 +124,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
     }
 
     writerExecutors.shutdown();
-    junit.framework.Assert.assertTrue(writerExecutors.awaitTermination(1, TimeUnit.MINUTES));
+    assertTrue(writerExecutors.awaitTermination(1, TimeUnit.MINUTES));
 
     System.out.println("All writer threads have finished.");
 
@@ -138,7 +138,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
     try {
       OResultSet<ODocument> clients = new OCommandSQL("select from Client").execute();
       final int total = clients.size();
-      junit.framework.Assert.assertEquals(expected, total);
+      assertEquals(expected, total);
     } finally {
       graph.getRawGraph().close();
     }
@@ -152,7 +152,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
           String sqlCommand = "select from cluster:client_" + server.getServerInstance().getDistributedManager().getLocalNodeName();
           OResultSet<ODocument> clients = new OCommandSQL(sqlCommand).execute();
           final int total = clients.size();
-          junit.framework.Assert.assertEquals(500, total);
+          assertEquals(500, total);
         } catch (Exception e) {
           e.printStackTrace();
         } finally {
@@ -162,38 +162,6 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
       serverId++;
     }
 
-    // checking indexes
-    //        serverId = 0;
-    //        for (ServerRun server : serverInstance) {
-    //            if (server.isActive()) {
-    //                graphFactory = new OrientGraphFactory("plocal:target/server" + serverId + "/databases/" + getDatabaseName());
-    //                graph = graphFactory.getNoTx();
-    //                try {
-    //                    final long indexSize = graph.getRawGraph().getMetadata().getIndexManager().getIndex("Client.name").getSize();
-    //
-    //                    if (indexSize != count) {
-    //                        // ERROR: DUMP ALL THE RECORDS
-    //                        List<ODocument> result = graph.command(new OCommandSQL("select from index:Client.name")).execute();
-    //                        int i = 0;
-    //                        for (ODocument d : result) {
-    //                            System.out.println((i++) + ": " + ((OIdentifiable) d.field("rid")).getRecord());
-    //                        }
-    //                    }
-    //
-    //                    junit.framework.Assert.assertEquals(count, indexSize);
-    //
-    //                    System.out.println("From metadata: indexes " + indexSize + " items");
-    //
-    //                    List<ODocument> result = graph.command(new OCommandSQL("select count(*) from index:Client.name")).execute();
-    //                    junit.framework.Assert.assertEquals(count, ((Long) result.get(0).field("count")).longValue());
-    //
-    //                    System.out.println("From sql: indexes " + indexSize + " items");
-    //                } finally {
-    //                    graph.getRawGraph().close();
-    //                }
-    //            }
-    //            serverId++;
-    //        }
   }
 
 
@@ -416,7 +384,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
 
     protected void checkVertex(OrientBaseGraph graph, int i) {
       OrientVertex vertex = loadVertex(graph, this.shardName, this.serverId, this.threadId, i);
-      junit.framework.Assert.assertEquals(vertex.getProperty("updated"), Boolean.TRUE);
+      assertEquals(vertex.getProperty("updated"), Boolean.TRUE);
     }
 
     protected void checkIndex(OrientBaseGraph graph, final String key, final ORID rid) {
@@ -436,7 +404,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
 
     protected void checkVertex(OrientBaseGraph graph, OrientVertex vertex) {
       vertex.reload();
-      junit.framework.Assert.assertEquals(vertex.getProperty("updated"), Boolean.TRUE);
+      assertEquals(vertex.getProperty("updated"), Boolean.TRUE);
     }
 
     protected void deleteRecord(OrientBaseGraph graph, OrientVertex vertex) {
@@ -446,7 +414,7 @@ public class AbstractShardingScenarioTest extends AbstractScenarioTest {
     protected void checkRecordIsDeleted(OrientBaseGraph graph, OrientVertex vertex) {
       try {
         vertex.reload();
-        junit.framework.Assert.fail("Record found while it should be deleted");
+        fail("Record found while it should be deleted");
       } catch (ORecordNotFoundException e) {
       }
     }
