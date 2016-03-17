@@ -36,9 +36,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * It represents an abstract scenario test with sharding on the cluster.
